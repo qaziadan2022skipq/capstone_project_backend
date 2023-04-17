@@ -10,11 +10,10 @@ import mongoose from "mongoose";
 import { fileURLToPath } from "url";
 import { register } from "./controllers/auth.js";
 import authRoutes from "./routes/auth.js";
-import userRoutes from "./routes/user.js"
+import userRoutes from "./routes/user.js";
 import { verifyToken } from "./middleware/auth.js";
 import { createStory } from "./controllers/story.js";
-import storyRoutes from "./routes/story.js"
-
+import storyRoutes from "./routes/story.js";
 
 dotenv.config();
 
@@ -44,15 +43,13 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
-
 // Routes with files
 app.post("/auth/register", upload.single("picture"), register);
 app.post("/story", upload.single("picture"), createStory);
 
 app.use("/auth", authRoutes);
 app.use("/user", userRoutes);
-app.use("/story", storyRoutes)
-
+app.use("/story", storyRoutes);
 
 const PORT = process.env.PORT || 6001;
 mongoose
