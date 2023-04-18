@@ -1,5 +1,6 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import { joiUserSchema } from "../middleware/auth.js";
 import User from "../models/User.js";
 
 // register user
@@ -7,12 +8,14 @@ export const register = async (req, res) => {
   try {
     const { firstName, lastName, username, email, password, picturePath } =
       req.body;
-    // incorrect information
-    if (!firstName && !lastName && !username && !email && !password &&!picturePath) {
-      return res.status(500).json({message: "Please Fill all the required fields"})
-    }
-    console.log(username, email)
-    
+    // JOI validation
+    await joiUserSchema.validateAsync({
+      firstname: firstName,
+      lastname: lastName,
+      username: username,
+      email: email,
+      password: password,
+    });
     const saltRounds = 10;
     const salt = bcrypt.genSaltSync(saltRounds);
     const passwordHashed = bcrypt.hashSync(password, salt);
@@ -26,7 +29,7 @@ export const register = async (req, res) => {
     });
 
     const savedUser = await newUser.save();
-    res.status(201).json(savedUser);
+    res.status(201).json({ message: "User Registered", user: savedUser });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -41,7 +44,7 @@ export const login = async (req, res) => {
     }
     const isMatch = bcrypt.compare(password, user.password);
     if (!isMatch) {
-      return res.status(400).json({ msg: "Password moesnot matches" });
+      return res.status(400).json({ msg: "Please enter the correct password" });
     }
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET_KEY);
     delete user.password;

@@ -46,13 +46,13 @@ export const upvote = async (req, res) => {
       const newVotes = story.upVotes.filter((user) => user !== userId);
       story.upVotes = newVotes;
       story.totalUpvotes -= 1;
-      story.save();
+      await story.save();
       console.log(story.upVotes);
       res.status(200).json({ message: "you upvotes is removed" });
     } else {
       story.upVotes.push(userId);
       story.totalUpvotes += 1;
-      story.save();
+      await story.save();
       console.log(story.upVotes);
       res.status(200).json({ message: "you have upvoted the story" });
     }
