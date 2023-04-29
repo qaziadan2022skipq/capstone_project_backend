@@ -5,11 +5,7 @@ const StorySchema = mongoose.Schema(
     storyDescription: {
       type: String,
     },
-    storyPicture: {
-      type: String,
-      default: "",
-    },
-    storyVideo: {
+    media: {
       type: String,
       default: "",
     },
@@ -33,6 +29,10 @@ const StorySchema = mongoose.Schema(
       type: Schema.Types.ObjectId,
       ref: "User",
     },
+    isPublic: {
+      type: Boolean,
+      default: false
+    }
   },
   { timestamps: true }
 );

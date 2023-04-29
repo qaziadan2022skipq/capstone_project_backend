@@ -3,15 +3,18 @@ import Story from "../models/story.js";
 
 export const createStory = async (req, res) => {
   try {
-    const { storyDescription, storyPicture, storyVideo, userId } = req.body;
+    const { storyDescription, userId } = req.body;
+    const path = req.file;
+    console.log(path);
+    const mediaPath = path.destination.concat("/" + path.originalname);
     // const user = await User.findById(userId);
     const newStory = new Story({
       storyDescription,
-      storyPicture,
-      storyVideo,
+      media: mediaPath,
       userId,
     });
     await newStory.save();
+    console.log(newStory);
     res.status(200).json({ message: "Stroy sucessfully uplaoded" });
   } catch (err) {
     res.status(500).json({ message: err.message });
@@ -82,5 +85,41 @@ export const downvotes = async (req, res) => {
     }
   } catch (err) {
     res.status(200).json({ message: err.message });
+  }
+};
+
+export const trendingStories = async (req, res) => {
+  try {
+    const trendingStories = await Story.find({}).sort([
+      ["totalUpvotes", -1],
+      ["createdAt", -1],
+    ]);
+    res.status(200).json({ trendingStories });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+export const publicStory = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const story = await Story.findById({ _id: id });
+    story.isPublic = true;
+    story.save();
+    res.status(200).json({ message: "story is public" });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+export const privateStory = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const story = await Story.findById({ _id: id });
+    story.isPublic = false;
+    story.save();
+    res.status(200).json({ message: "story is private" });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
   }
 };

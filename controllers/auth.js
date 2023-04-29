@@ -6,8 +6,10 @@ import User from "../models/User.js";
 // register user
 export const register = async (req, res) => {
   try {
-    const { firstName, lastName, username, email, password, picturePath } =
+    const { firstName, lastName, username, email, password } =
       req.body;
+    const path = req.file
+    const picturePath = path.destination.concat("/"+path.originalname)
     // JOI validation
     await joiUserSchema.validateAsync({
       firstname: firstName,
