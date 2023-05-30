@@ -10,16 +10,18 @@ const StorySchema = mongoose.Schema(
       default: "",
     },
     upVotes: {
-      type: Array,
-      default: [],
+      type: Map,
+      of: Boolean,
+      default: {}
     },
     totalUpvotes: {
       type: Number,
       default: 0,
     },
     downVotes: {
-      type: Array,
-      default: [],
+      type: Map,
+      of: Boolean,
+      default: {}
     },
     totalDownvotes: {
       type: Number,
@@ -29,6 +31,15 @@ const StorySchema = mongoose.Schema(
       type: Schema.Types.ObjectId,
       ref: "User",
     },
+    firstName: {
+      type: String,
+      required: true,
+    },
+    lastName: {
+      type: String,
+      required: true,
+    },
+    userPicturePath: String,
     isPublic: {
       type: Boolean,
       default: false

@@ -12,12 +12,12 @@ import { verifyToken } from "../middleware/auth.js";
 const router = express.Router();
 
 router.get("/trending", trendingStories);
-router.get("/:id", userStory);
-router.get("/", getAllStories);
-router.post("/upvote", upvote);
-router.post("/downvote", downvotes);
-router.post("/public/:id", publicStory);
-router.post("/private/:id", privateStory);
+router.get("/user/:id",  userStory);
+router.get("/",  getAllStories);
+router.patch("/:id/upvote",verifyToken, upvote);
+router.patch("/:id/downvote", verifyToken, downvotes);
+router.post("/public/:id", verifyToken, publicStory);
+router.post("/private/:id", verifyToken, privateStory);
 
 
 export default router;
