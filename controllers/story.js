@@ -18,7 +18,7 @@ export const createStory = async (req, res) => {
     await newStory.save();
     console.log(newStory);
     const story = await Story.find()
-    res.status(200).json({story});
+    res.status(200).json(story);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
@@ -28,7 +28,7 @@ export const userStory = async (req, res) => {
   try {
     const { id } = req.params;
     const story = await Story.find({ userId: id });
-    res.status(200).json({ story });
+    res.status(200).json(story);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
@@ -37,7 +37,7 @@ export const userStory = async (req, res) => {
 export const getAllStories = async (req, res) => {
   try {
     const stories = await Story.find({isPublic: true});
-    res.status(200).json({ stories });
+    res.status(200).json(stories);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
@@ -103,7 +103,7 @@ export const trendingStories = async (req, res) => {
       ["totalUpvotes", -1],
       ["createdAt", -1],
     ]);
-    res.status(200).json({ trendingStories });
+    res.status(200).json(trendingStories);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
@@ -115,7 +115,7 @@ export const publicStory = async (req, res) => {
     const story = await Story.findById({ _id: id });
     story.isPublic = true;
     story.save();
-    res.status(200).json({ message: "story is public" });
+    res.status(200).json(story);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
@@ -127,7 +127,7 @@ export const privateStory = async (req, res) => {
     const story = await Story.findById({ _id: id });
     story.isPublic = false;
     story.save();
-    res.status(200).json({ message: "story is private" });
+    res.status(200).json(story);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
