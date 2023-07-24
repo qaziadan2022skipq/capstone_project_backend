@@ -3,12 +3,13 @@ import Story from "../models/story.js";
 
 export const createStory = async (req, res) => {
   try {
-    const { storyDescription, userId } = req.body;
+    const { storyDescription, userId, fontStyle } = req.body;
     const path = req.file;
     const mediaPath = path.destination.concat("/" + path.originalname);
     const user = await User.findById(userId);
     const newStory = new Story({
       storyDescription,
+      fontStyle,
       media: mediaPath,
       userId,
       firstName: user.firstName,

@@ -5,6 +5,10 @@ const StorySchema = mongoose.Schema(
     storyDescription: {
       type: String,
     },
+    fontStyle: {
+      type: String,
+      default: ""
+    },
     media: {
       type: String,
       default: "",
